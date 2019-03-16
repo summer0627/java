@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .clock {
+            width: 300px;
+            height: 300px;
+            border: 10px solid #ccc;
+            /*border-radius: 160px;*/
+            /*百分比参照元素的实际宽高*/
+            border-radius: 50%;
+            margin: 100px auto;
+            position: relative;
+        }
+        
+        .line {
+            width: 8px;
+            height: 300px;
+            background-color: #ccc;
+            position: absolute;
+            /*参照父容器的宽*/
+            left: 50%;
+            top: 0;
+            /*参照元素本身*/
+            transform: translate(-50%, 0);
+        }
+        
+        .line1,
+        .line4 {
+            width: 10px;
+        }
+        
+        .line2 {
+            transform: translate(-50%, 0) rotate(30deg);
+        }
+        
+        .line3 {
+            transform: translate(-50%, 0) rotate(60deg);
+        }
+        
+        .line4 {
+            transform: translate(-50%, 0) rotate(90deg);
+        }
+        
+        .line5 {
+            transform: translate(-50%, 0) rotate(120deg);
+        }
+        
+        .line6 {
+            transform: translate(-50%, 0) rotate(150deg);
+        }
+        
+        .cover {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background-color: #fff;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .hour {
+            width: 6px;
+            height: 80px;
+            background-color: red;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -100%);
+            transform-origin: center bottom;
+            animation: clockAnimation 43200s linear infinite;
+        }
+        
+        .minute {
+            width: 4px;
+            height: 90px;
+            background-color: green;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -100%);
+            transform-origin: center bottom;
+            animation: clockAnimation 3600s linear infinite;
+        }
+        
+        .second {
+            width: 2px;
+            height: 100px;
+            background-color: palegreen;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -100%);
+            /*设置旋转轴心*/
+            transform-origin: center bottom;
+            /*添加动画*/
+            animation: clockAnimation 60s infinite steps(60);
+            /*steps(60)与animation-timing-function的其它属性冲突*/
+            /*animation-timing-function: steps(60);*/
+        }
+        
+        .center {
+            width: 20px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        /*创建动画*/
+        /* @keyframes clockAnimation {
+            from {
+                transform: translate(-50%, -100%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -100%) rotate(360deg);
+            }
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="clock">
+        <div class="line line1"></div>
+        <div class="line line2"></div>
+        <div class="line line3"></div>
+        <div class="line line4"></div>
+        <div class="line line5"></div>
+        <div class="line line6"></div>
+        <div class="cover"></div>
+        <div class="hour"></div>
+        <div class="minute"></div>
+        <div class="second"></div>
+        <div class="center"></div>
+    </div>
+
+    <script>
+        // 获取三根针
+
+        var hour = document.querySelector('.hour');
+        var minute = document.querySelector('.minute');
+        var second = document.querySelector('.second');
+        clock()
+
+        function clock() {
+            // date是系统时间 
+            var date = new Date();
+            // console.log(date);
+            // 获取到时
+            var h = date.getHours();
+            // 分
+            var m = date.getMinutes()
+                // 秒
+            var s = date.getSeconds();
+            // 毫秒
+            var ms = date.getMilliseconds()
+                // 秒 =  当前的秒 +过去的毫秒数
+            s = s + ms / 1000
+                // 分 = 当前的=分钟+ 过去的秒
+            m = m + s / 60
+                // 小时   = 当前的小时  + 过去的分钟数
+            h = h + m / 60
+            console.log(s);
+            second.style.transform = 'translate(-50%, -100%) rotate(' + s * 6 + 'deg)'
+            minute.style.transform = 'translate(-50%, -100%) rotate(' + m * 6 + 'deg)'
+            hour.style.transform = 'translate(-50%, -100%) rotate(' + h * 30 + 'deg)'
+        }
+        setInterval(clock, 100);
+    </script>
+</body>
+
+</html>
